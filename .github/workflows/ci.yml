@@ -2,9 +2,9 @@ name: CI/CD Pipeline 4 Tahap
 
 on:
   push:
-    branches: [ "main", "dev", "feature/*" ]
+    branches: [ "**" ]
   pull_request:
-    branches: [ "main", "dev" ]
+    branches: [ "**" ]
 
 jobs:
   build:
