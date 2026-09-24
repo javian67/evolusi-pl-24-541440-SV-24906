@@ -1,48 +1,61 @@
-name: Laravel CI
+name: CI/CD Pipeline 4 Tahap
 
 on:
   push:
-    branches: [ main, dev ]
+    branches: [ "main", "dev", "feature/*" ]
   pull_request:
-    branches: [ main, dev ]
+    branches: [ "main", "dev" ]
 
 jobs:
-  code-syntax-check:
-    name: Lint & Code Check
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
+      - uses: actions/checkout@v4
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.3'
-
-      - name: Check PHP Syntax
-        run: php -l app/Models/User.php
-
-  unit-tests:
-    name: Run Automated Tests
-    needs: code-syntax-check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.3'
-
-      - name: Copy .env
-        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-
+          php-version: '8.4'
       - name: Install Dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest --ignore-platform-reqs
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
-      - name: Generate Application Key
-        run: php artisan key:generate
-
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+      - name: Install Dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Setup Laravel
+        run: |
+          cp .env.example .env
+          php artisan key:generate
       - name: Run Tests
         run: php artisan test
+
+  staging:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy Staging
+        run: echo "Deploy ke server staging berjalan..."
+
+  production:
+    needs: staging
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Deploy Production
+        run: |
+          echo "Menjalankan 7 Langkah Deploy:"
+          echo "1. php artisan down"
+          echo "2. git pull origin main"
+          echo "3. composer install --optimize-autoloader --no-dev"
+          echo "4. php artisan migrate --force"
+          echo "5. php artisan config:cache"
+          echo "6. php artisan route:cache"
+          echo "7. php artisan up"
