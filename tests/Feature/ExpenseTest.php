@@ -8,10 +8,18 @@ use Tests\TestCase;
 
 class ExpenseTest extends TestCase
 {
- public function test_it_can_run_successfully()
+    public function test_it_can_run_successfully()
     {
-        // nnti Ganti 'true' menjadi 'false' buat  pipeline gagal
-        $this->assertTrue(true); 
+        $this->assertTrue(true);
+    }
+
+    public function test_expenses_page_uses_formatted_currency_input()
+    {
+        $response = $this->get('/');
+
+        $response->assertOk();
+        $response->assertSee('id="amountInput"');
+        $response->assertSee('formatRupiah');
     }
 }
 

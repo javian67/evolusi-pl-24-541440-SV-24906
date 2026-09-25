@@ -1,9 +1,14 @@
-# Web Portofolio - Laravel 11
+🚀 Fitur Utama
 
-Proyek aplikasi web portofolio sederhana berbasis Laravel 11 untuk memenuhi tugas mata kuliah Evaluasi & Evolusi Perangkat Lunak (KEPL).
+Aplikasi ini mengimplementasikan operasi CRUD (Create, Read, Update, Delete) sederhana pada satu tabel utama:
+-Catat Pengeluaran Baru: Menambahkan detail pengeluaran (nama barang/jasa, nominal, tanggal).
+-Lihat Daftar Pengeluaran: Menampilkan riwayat pengeluaran.
+-Ubah Data: Memperbaiki kesalahan input pada catatan pengeluaran.
+-Hapus Data: Menghapus catatan pengeluaran yang tidak relevan.
 
-## Fitur Utama
-- Halaman Utama (Beranda / Profil Ringkas)
-- Halaman About (`/about`)
-- Otomatisasi CI/CD via GitHub Actions
-- Pengelolaan Branch: `main`, `dev`, dan `feature/*`
+⚙️ CI/CD Pipeline (GitHub Actions)
+Repositori ini telah dilengkapi dengan workflow CI/CD 4 Tahap yang berjalan secara sekuensial menggunakan parameter needs:
+-Build: Menyiapkan environment dan menginstal dependensi (composer install).
+-Test: Menjalankan unit testing (php artisan test) secara otomatis.
+-Staging: Simulasi pengerahan ke server staging.
+-Production: Eksekusi skrip deployment (diwakili perintah echo). Tahap ini dilindungi dengan environment protection, wajib required reviewer, dan hanya dieksekusi dari branch main.
