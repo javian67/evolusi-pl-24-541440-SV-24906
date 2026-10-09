@@ -37,3 +37,8 @@ jobs:
           push: true
           # Menggunakan SHA commit sebagai tag
           tags: ${{ env.REGISTRY }}/${{ env.LC_IMAGE_NAME }}:${{ github.sha }}
+
+      - name: Create SQLite Database
+        run: |
+          mkdir -p database
+          touch database/database.sqlite
