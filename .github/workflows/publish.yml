@@ -2,7 +2,7 @@ name: Publish to GHCR
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "feature/docker-setup" ]
 
 env:
   REGISTRY: ghcr.io
