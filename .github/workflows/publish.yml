@@ -18,6 +18,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        
 
       # Memastikan nama image huruf kecil semua (Syarat mutlak GHCR)
       - name: Lowercase image name
@@ -37,3 +38,11 @@ jobs:
           push: true
           # Menggunakan SHA commit sebagai tag
           tags: ${{ env.REGISTRY }}/${{ env.LC_IMAGE_NAME }}:${{ github.sha }}
+          
+      - name: Create SQLite Database
+        run: |
+            mkdir -p database
+            touch database/database.sqlite
+
+
+          
