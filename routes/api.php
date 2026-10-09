@@ -7,3 +7,7 @@ Route::get('/pengeluaran', function () {
     $data = DB::table('expenses')->get(); 
     return response()->json($data);
 });
+
+// tes cache
+// tes cache
+// tes     cache
